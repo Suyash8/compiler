@@ -1,72 +1,86 @@
-**Concept**: Tokenize C-like source into identifiers, numbers, operators, symbols, and strings
+**Concept**: Lexical analyzer for C-like source code
 **Logic**:
-- Build a combined regex with named groups
-- Iterate matches and skip whitespace
+- Read the full file into memory
+- Match preprocessor directives, comments, strings, numbers, identifiers, operators, and delimiters
+- Classify keywords separately from ordinary identifiers
 **Sample Input**:
 File: code/sample_inputs/01_sample_input.c
+```c
+#include <stdio.h>
+
+int add(int a, int b)
+{
+	return a + b;
+}
+
+int main()
+{
+	printf("Line one\n");
+	printf("Line two\n");
+	int x = add(2, 3);
+	printf("x=%d\n", x);
+	return 0;
+}
+```
 **Sample Output**:
 ```
-Input file: code/sample_inputs/01_sample_input.c
+Input file: /home/devniru2704/Personal Files/Programs/Github/cc/code/sample_inputs/01_sample_input.c
 Tokens:
-ID include
-OP <
-ID stdio
-ID h
-OP >
-ID int
-ID add
-SYM (
-ID int
-ID a
-SYM ,
-ID int
-ID b
-SYM )
-SYM {
-ID return
-ID a
-OP +
-ID b
-SYM ;
-SYM }
-ID int
-ID main
-SYM (
-SYM )
-SYM {
-ID printf
-SYM (
-STR "Line one\n"
-SYM )
-SYM ;
-ID printf
-SYM (
-STR "Line two\n"
-SYM )
-SYM ;
-ID int
-ID x
-OP =
-ID add
-SYM (
-NUM 2
-SYM ,
-NUM 3
-SYM )
-SYM ;
-ID printf
-SYM (
-STR "x=%d\n"
-SYM ,
-ID x
-SYM )
-SYM ;
-ID return
-NUM 0
-SYM ;
-SYM }
+PREPROCESSOR #include <stdio.h>
+KEYWORD      int
+IDENTIFIER   add
+DELIMITER    (
+KEYWORD      int
+IDENTIFIER   a
+DELIMITER    ,
+KEYWORD      int
+IDENTIFIER   b
+DELIMITER    )
+DELIMITER    {
+KEYWORD      return
+IDENTIFIER   a
+OPERATOR     +
+IDENTIFIER   b
+DELIMITER    ;
+DELIMITER    }
+KEYWORD      int
+KEYWORD      main
+DELIMITER    (
+DELIMITER    )
+DELIMITER    {
+IDENTIFIER   printf
+DELIMITER    (
+STRING       "Line one\n"
+DELIMITER    )
+DELIMITER    ;
+IDENTIFIER   printf
+DELIMITER    (
+STRING       "Line two\n"
+DELIMITER    )
+DELIMITER    ;
+KEYWORD      int
+IDENTIFIER   x
+OPERATOR     =
+IDENTIFIER   add
+DELIMITER    (
+NUMBER       2
+DELIMITER    ,
+NUMBER       3
+DELIMITER    )
+DELIMITER    ;
+IDENTIFIER   printf
+DELIMITER    (
+STRING       "x=%d\n"
+DELIMITER    ,
+IDENTIFIER   x
+DELIMITER    )
+DELIMITER    ;
+KEYWORD      return
+NUMBER       0
+DELIMITER    ;
+DELIMITER    }
 ```
 **Run**:
 ```bash
-python3 code/10_lexical_analyzer.py code/sample_inputs/01_sample_input.c
+python3 code/10_lexical_analyzer.py
 ```
