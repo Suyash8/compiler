@@ -1,0 +1,16 @@
+1. WAP in python that takes a C program file as input and counts the number of lines, words and characters.
+2.  WAP in python that takes a C program file as input and counts the blanks and comments.
+3. WAP in python that takes a C program file as input and counts the functions.
+4. WAP in python that takes a C program file as input and counts the loops and conditional statements.
+5. WAP in python that takes a C program file as input and counts the header files
+6. WAP in python that takes a C program file as input and counts variables by data type.
+7. WAP in python that takes a C program file as input and remove extra space from source code
+8.  Regular Expression (re.search(), re.match() and re.search() compare, re.findall(), re.sub(), re.split(), Password validation, Email validation, URL validation)
+9. Lex program for simple calculator
+10. Lexical Analyzer
+11. Left Factoring and Left Recursion
+12.  Regular Expression for lexical analysis in C/C++ (use the same regex as in exp 7 but in C/C++)
+13. First and Follow
+14. LL(1) Parsing Table
+15. LR(0) Parsing Table
+16. Operator Relational table
