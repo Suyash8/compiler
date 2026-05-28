@@ -1,15 +1,38 @@
-**Concept**: Operator precedence and associativity table
+**Concept**: Operator precedence relation table
 **Logic**:
-- Print precedence and associativity for operators
+- Store an operator grammar in the program
+- Compute FIRSTVT and LASTVT sets
+- Fill the precedence table using <, =, and > relations
 **Sample Input**:
-Operators: + - * / ^
+Grammar used in the program:
+```text
+E -> E + T | E - T | T
+T -> T * F | T / F | F
+F -> ( E ) | i
+```
 **Sample Output**:
 ```
-+ precedence 1 assoc L
-- precedence 1 assoc L
-* precedence 2 assoc L
-/ precedence 2 assoc L
-^ precedence 3 assoc R
+Grammar
+E -> E + T
+E -> E - T
+E -> T
+T -> T * F
+T -> T / F
+T -> F
+F -> ( E )
+F -> i
+
+FIRSTVT
+E: ['(', '*', '+', '-', '/', 'i']
+T: ['(', '*', '/', 'i']
+F: ['(', 'i']
+
+LASTVT
+E: [')', '*', '+', '-', '/', 'i']
+T: [')', '*', '/', 'i']
+F: [')', 'i']
+
+Operator Precedence Relation Table
 ```
 **Run**:
 ```bash
