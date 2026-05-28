@@ -1,63 +1,100 @@
-import sys,re
-def tokenize(expr):
-    spec=[('NUM',r'\d+(?:\.\d+)?'),('PLUS',r'\+'),('MINUS',r'-'),('MUL',r'\*'),('DIV',r'/'),('LP',r'\('),('RP',r'\)'),('WS',r'\s+')]
-    rg='|'.join('(?P<%s>%s)'%p for p in spec)
-    for m in re.finditer(rg,expr):
-        k=m.lastgroup
-        if k!='WS':
-            yield (k,m.group())
-def precedence(op):
-    if op in ('PLUS','MINUS'):
+import re
+
+def tokenize(expression):
+    spec = [
+        ("NUMBER", r"\d+(?:\.\d+)?"),
+        ("PLUS", r"\+"),
+        ("MINUS", r"-"),
+        ("MUL", r"\*"),
+        ("DIV", r"/"),
+        ("LPAREN", r"\("),
+        ("RPAREN", r"\)"),
+        ("SKIP", r"[ \t\n]+"),
+        ("MISMATCH", r"."),
+    ]
+    pattern = re.compile("|".join("(?P<%s>%s)" % pair for pair in spec))
+    tokens = []
+    for match in pattern.finditer(expression):
+        kind = match.lastgroup
+        value = match.group()
+        if kind == "SKIP":
+            continue
+        if kind == "MISMATCH":
+            tokens.append(("UNKNOWN", value))
+        else:
+            tokens.append((kind, value))
+    return tokens
+
+def precedence(operator):
+    if operator in ("PLUS", "MINUS"):
         return 1
-    if op in ('MUL','DIV'):
+    if operator in ("MUL", "DIV"):
         return 2
     return 0
-def apply_op(op,a,b):
-    if op=='PLUS':
-        return a+b
-    if op=='MINUS':
-        return a-b
-    if op=='MUL':
-        return a*b
-    if op=='DIV':
-        return a/b
+
+def apply_operator(operator, left, right):
+    if operator == "PLUS":
+        return left + right
+    if operator == "MINUS":
+        return left - right
+    if operator == "MUL":
+        return left * right
+    if operator == "DIV":
+        return left / right
     return 0
+
 def evaluate(tokens):
-    vals=[]
-    ops=[]
-    for k,v in tokens:
-        if k=='NUM':
-            vals.append(float(v))
-        elif k=='LP':
-            ops.append(k)
-        elif k=='RP':
-            while ops and ops[-1]!='LP':
-                op=ops.pop()
-                b=vals.pop();a=vals.pop()
-                vals.append(apply_op(op,a,b))
-            if ops and ops[-1]=='LP':
-                ops.pop()
-        else:
-            while ops and ops[-1]!='LP' and precedence(ops[-1])>=precedence(k):
-                op=ops.pop()
-                b=vals.pop();a=vals.pop()
-                vals.append(apply_op(op,a,b))
-            ops.append(k)
-    while ops:
-        op=ops.pop()
-        b=vals.pop();a=vals.pop()
-        vals.append(apply_op(op,a,b))
-    return vals[0] if vals else 0
+    values = []
+    operators = []
+    for kind, value in tokens:
+        if kind == "NUMBER":
+            values.append(float(value))
+        elif kind == "LPAREN":
+            operators.append(kind)
+        elif kind == "RPAREN":
+            while operators and operators[-1] != "LPAREN":
+                operator = operators.pop()
+                right = values.pop()
+                left = values.pop()
+                values.append(apply_operator(operator, left, right))
+            if operators and operators[-1] == "LPAREN":
+                operators.pop()
+        elif kind in ("PLUS", "MINUS", "MUL", "DIV"):
+            while operators and operators[-1] != "LPAREN" and precedence(operators[-1]) >= precedence(kind):
+                operator = operators.pop()
+                right = values.pop()
+                left = values.pop()
+                values.append(apply_operator(operator, left, right))
+            operators.append(kind)
+    while operators:
+        operator = operators.pop()
+        right = values.pop()
+        left = values.pop()
+        values.append(apply_operator(operator, left, right))
+    return values[0] if values else 0
+
+def format_token(kind, value):
+    names = {
+        "NUMBER": "Number",
+        "PLUS": "Plus",
+        "MINUS": "Minus",
+        "MUL": "Multiply",
+        "DIV": "Divide",
+        "LPAREN": "Left Parenthesis",
+        "RPAREN": "Right Parenthesis",
+        "UNKNOWN": "Unknown",
+    }
+    return names.get(kind, kind), value
+
 def main():
-    expr = sys.argv[1] if len(sys.argv)>1 else ''
-    if expr=='':
-        print('Usage: python 09_lex_calculator.py "expression"')
-        return
-    toks=list(tokenize(expr))
-    print('Input:', expr)
-    print('Tokens:')
-    for k,v in toks:
-        print(k,v)
-    print('Result:', evaluate(toks))
-if __name__=='__main__':
+    expression = "10 + 2 * (8 - 3) / 5"
+    tokens = tokenize(expression)
+    print("Expression:", expression)
+    print("Tokens:")
+    for kind, value in tokens:
+        label, text = format_token(kind, value)
+        print(f"{label:<18} {text}")
+    print("Result:", evaluate(tokens))
+
+if __name__ == "__main__":
     main()

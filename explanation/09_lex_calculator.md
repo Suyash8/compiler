@@ -1,25 +1,31 @@
-**Concept**: Lex-style calculator for arithmetic expressions
+**Concept**: Simple calculator using lexical analysis and expression evaluation
 **Logic**:
+- Store the sample expression inside the program
 - Tokenize numbers, operators, and parentheses
-- Evaluate using operator precedence with two stacks
+- Evaluate the expression using operator precedence and two stacks
 **Sample Input**:
-Expression: 1+2*(3-4)
+Expression used in the program:
+```text
+10 + 2 * (8 - 3) / 5
+```
 **Sample Output**:
 ```
-Input: 1+2*(3-4)
+Expression: 10 + 2 * (8 - 3) / 5
 Tokens:
-NUM 1
-PLUS +
-NUM 2
-MUL *
-LP (
-NUM 3
-MINUS -
-NUM 4
-RP )
-Result: -1.0
+Number             10
+Plus               +
+Number             2
+Multiply           *
+Left Parenthesis   (
+Number             8
+Minus              -
+Number             3
+Right Parenthesis  )
+Divide             /
+Number             5
+Result: 12.0
 ```
 **Run**:
 ```bash
-python3 code/09_lex_calculator.py "1+2*(3-4)"
+python3 code/09_lex_calculator.py
 ```
