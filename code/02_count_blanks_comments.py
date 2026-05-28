@@ -1,19 +1,32 @@
-import sys,re
-from pathlib import Path
+import re
+
 def main():
-    base = Path(__file__).resolve().parent / 'sample_inputs'
-    p = Path(sys.argv[1]) if len(sys.argv) > 1 else base / '02_sample_input.c'
-    try:
-        text = p.read_text(encoding='utf-8', errors='ignore')
-    except Exception:
-        print('Error: file not found:', p)
-        return
-    blanks = text.count('\n') + (0 if text == '' or text.endswith('\n') else 1)
-    single = len(re.findall(r'//.*', text))
-    multi = len(re.findall(r'/\*[\s\S]*?\*/', text))
-    print('Input file:', p)
-    print('Blank lines:', blanks)
-    print('Single-line comments:', single)
-    print('Multi-line comments:', multi)
-if __name__=='__main__':
+    source = """#include <stdio.h>
+
+// this is a single line comment
+int add(int a, int b) { return a + b; }
+
+/*
+   this is a
+   multi-line comment
+*/
+
+int main()
+{
+
+    // blank line above
+    return 0;
+}
+"""
+    blank_lines = source.count("\n") + (0 if source == "" or source.endswith("\n") else 1)
+    single_comments = len(re.findall(r"//.*", source))
+    multi_comments = len(re.findall(r"/\*[\s\S]*?\*/", source))
+    print("Embedded Source:")
+    print(source.rstrip())
+    print()
+    print("Blank lines:", blank_lines)
+    print("Single-line comments:", single_comments)
+    print("Multi-line comments:", multi_comments)
+
+if __name__ == "__main__":
     main()

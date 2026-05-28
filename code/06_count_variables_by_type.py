@@ -1,18 +1,30 @@
-import sys,re
-from pathlib import Path
+import re
+
 def main():
-    base = Path(__file__).resolve().parent / 'sample_inputs'
-    p = Path(sys.argv[1]) if len(sys.argv) > 1 else base / '06_sample_input.c'
-    try:
-        text = p.read_text(encoding='utf-8', errors='ignore')
-    except Exception:
-        print('Error: file not found:', p)
-        return
-    types = ['int','char','float','double','long','short']
-    print('Input file:', p)
-    for t in types:
-        pat = re.compile(r'\b'+t+r'\b[^;=\n]*;')
-        m = pat.findall(text)
-        print(t+':', len(m))
-if __name__=='__main__':
+    source = """#include <stdio.h>
+
+int a;
+char c;
+float f;
+double d;
+long l;
+short s;
+
+int main()
+{
+    int x;
+    char y;
+    return 0;
+}
+"""
+    types = ["int", "char", "float", "double", "long", "short"]
+    print("Embedded Source:")
+    print(source.rstrip())
+    print()
+    for data_type in types:
+        pattern = re.compile(r"\b" + data_type + r"\b[^;=\n]*;")
+        matches = pattern.findall(source)
+        print(f"{data_type}: {len(matches)}")
+
+if __name__ == "__main__":
     main()

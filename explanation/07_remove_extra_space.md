@@ -1,31 +1,42 @@
-**Concept**: Remove extra spaces and blank lines from source code
+**Concept**: Remove extra spaces and extra blank lines from source code
 **Logic**:
-- Trim leading and trailing spaces
-- Collapse multiple spaces into one
-- Remove consecutive blank lines
+- Store a sample C source string inside the program
+- Remove repeated spaces from each line
+- Keep only one blank line when multiple blank lines appear together
 **Sample Input**:
-File: code/sample_inputs/07_sample_input.c
+Embedded source used in the program:
 ```c
 #include <stdio.h>
 
-int main()
-{
 
-	printf("Hello");
+int    main( )   {
 
-	return 0;
+	printf(   "Hello"   );
+
+
+	return   0;
 }
 ```
 **Sample Output**:
 ```
-Input file: /home/devniru2704/Personal Files/Programs/Github/cc/code/sample_inputs/07_sample_input.c
-Cleaned output:
+Original Source:
 #include <stdio.h>
 
-int main()
-{
 
-printf("Hello");
+int    main( )   {
+
+	printf(   "Hello"   );
+
+
+	return   0;
+}
+
+Cleaned Source:
+#include <stdio.h>
+
+int main( ) {
+
+printf( "Hello" );
 
 return 0;
 }

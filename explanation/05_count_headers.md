@@ -1,9 +1,10 @@
-**Concept**: Count header includes in a C source file
+**Concept**: Count header includes in a C snippet
 **Logic**:
+- Store a sample C program inside the Python file
 - Match #include lines using regex
 - Count and print each include
 **Sample Input**:
-File: code/sample_inputs/05_sample_input.c
+Embedded source used in the program:
 ```c
 #include <stdio.h>
 #include "myheader.h"
@@ -16,7 +17,16 @@ int main()
 ```
 **Sample Output**:
 ```
-Input file: /home/devniru2704/Personal Files/Programs/Github/cc/code/sample_inputs/05_sample_input.c
+Embedded Source:
+#include <stdio.h>
+#include "myheader.h"
+#include <stdlib.h>
+
+int main()
+{
+	return 0;
+}
+
 Header count: 3
 #include <stdio.h>
 #include "myheader.h"

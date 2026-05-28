@@ -1,10 +1,10 @@
-**Concept**: Count blank lines and comments in a C source file
+**Concept**: Count blank lines and comments in a C source snippet
 **Logic**:
-- Read the full file into a string
+- Store a sample C program inside the Python file
 - Count blank lines using newline characters
 - Find // comments and /* */ comments using regex
 **Sample Input**:
-File: code/sample_inputs/02_sample_input.c
+Embedded source used in the program:
 ```c
 #include <stdio.h>
 
@@ -12,20 +12,37 @@ File: code/sample_inputs/02_sample_input.c
 int add(int a, int b) { return a + b; }
 
 /*
-   this is a
-   multi-line comment
+	this is a
+	multi-line comment
 */
 
 int main()
 {
 
-	// blank line above
-	return 0;
+	 // blank line above
+	 return 0;
 }
 ```
 **Sample Output**:
 ```
-Input file: /home/devniru2704/Personal Files/Programs/Github/cc/code/sample_inputs/02_sample_input.c
+Embedded Source:
+#include <stdio.h>
+
+// this is a single line comment
+int add(int a, int b) { return a + b; }
+
+/*
+	this is a
+	multi-line comment
+*/
+
+int main()
+{
+
+	 // blank line above
+	 return 0;
+}
+
 Blank lines: 16
 Single-line comments: 2
 Multi-line comments: 1
