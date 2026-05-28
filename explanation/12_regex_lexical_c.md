@@ -1,45 +1,84 @@
-**Concept**: Use C regex to find identifiers in a source file
+**Concept**: Regex-based lexical analyzer in C
 **Logic**:
-- Read the full file into memory
-- Use POSIX regex to match identifier pattern
-- Print each identifier
+- Read the full source file into memory
+- Check the current text against regex rules for keywords, identifiers, numbers, strings, operators, delimiters, and comments
+- Print the token type and token text in sequence
 **Sample Input**:
 File: code/sample_inputs/01_sample_input.c
+```c
+#include <stdio.h>
+
+int add(int a, int b)
+{
+	return a + b;
+}
+
+int main()
+{
+	printf("Line one\n");
+	printf("Line two\n");
+	int x = add(2, 3);
+	printf("x=%d\n", x);
+	return 0;
+}
+```
 **Sample Output**:
 ```
 Input file: code/sample_inputs/01_sample_input.c
-Identifiers:
-ID:include
-ID:stdio
-ID:h
-ID:int
-ID:add
-ID:int
-ID:a
-ID:int
-ID:b
-ID:return
-ID:a
-ID:b
-ID:int
-ID:main
-ID:printf
-ID:Line
-ID:one
-ID:n
-ID:printf
-ID:Line
-ID:two
-ID:n
-ID:int
-ID:x
-ID:add
-ID:printf
-ID:x
-ID:d
-ID:n
-ID:x
-ID:return
+Tokens:
+PREPROCESSOR #include <stdio.h>
+KEYWORD      int
+IDENTIFIER   add
+DELIMITER    (
+KEYWORD      int
+IDENTIFIER   a
+DELIMITER    ,
+KEYWORD      int
+IDENTIFIER   b
+DELIMITER    )
+DELIMITER    {
+KEYWORD      return
+IDENTIFIER   a
+OPERATOR     +
+IDENTIFIER   b
+DELIMITER    ;
+DELIMITER    }
+KEYWORD      int
+KEYWORD      main
+DELIMITER    (
+DELIMITER    )
+DELIMITER    {
+IDENTIFIER   printf
+DELIMITER    (
+STRING       "Line one\n"
+DELIMITER    )
+DELIMITER    ;
+IDENTIFIER   printf
+DELIMITER    (
+STRING       "Line two\n"
+DELIMITER    )
+DELIMITER    ;
+KEYWORD      int
+IDENTIFIER   x
+OPERATOR     =
+IDENTIFIER   add
+DELIMITER    (
+NUMBER       2
+DELIMITER    ,
+NUMBER       3
+DELIMITER    )
+DELIMITER    ;
+IDENTIFIER   printf
+DELIMITER    (
+STRING       "x=%d\n"
+DELIMITER    ,
+IDENTIFIER   x
+DELIMITER    )
+DELIMITER    ;
+KEYWORD      return
+NUMBER       0
+DELIMITER    ;
+DELIMITER    }
 ```
 **Run**:
 ```bash
