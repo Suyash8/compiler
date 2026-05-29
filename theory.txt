@@ -69,3 +69,168 @@ E → T E'
 E' → + T E' | ε
 
 Now the recursion is removed, and the grammar becomes suitable for LL(1) parsing.
+
+
+
+
+
+
+-----------------------
+
+
+
+
+
+
+
+UPDATED
+
+
+
+
+
+
+
+-------------------------
+
+
+
+
+
+
+1. What is left recursion? Why must it be eliminated for LL(1) parsing?
+
+
+
+Left recursion occurs in a grammar when a non-terminal can derive a string that begins with itself.
+
+In simple terms, if a production has the form:
+
+A → Aα
+
+where A is a non-terminal and α is any sequence of symbols, then the grammar is left recursive.
+
+There are two types of left recursion:
+
+a) Immediate left recursion
+This happens when the non-terminal directly appears on the left side of its own production.
+
+Example:
+
+E → E + T | T
+
+Here, E directly derives E + T, so it is immediately left recursive.
+
+b) Indirect left recursion
+This happens when left recursion occurs through other non-terminals.
+
+Example:
+
+A → Bα
+B → Aβ | γ
+
+Here, A derives B and B derives A, creating indirect left recursion.
+
+Why must left recursion be eliminated for LL(1) parsing?
+
+LL(1) parsers are top-down parsers. They try to expand productions starting from the leftmost non-terminal using one lookahead symbol.
+
+If left recursion exists, the parser enters infinite recursion.
+
+Consider:
+
+E → E + T | T
+
+Suppose the parser tries to parse E.
+
+It expands:
+
+E → E + T
+
+Again, the leftmost symbol is E, so it expands again:
+
+E → E + T
+
+This continues forever without consuming any input symbol.
+
+Because of this infinite recursion, LL(1) parsers cannot handle left-recursive grammars. Therefore, left recursion must be removed before constructing an LL(1) parser.
+
+Example of eliminating left recursion:
+
+Original grammar:
+
+A → Aα | β
+
+where β does not start with A.
+
+After eliminating left recursion:
+
+A → βA'
+A' → αA' | ε
+
+Example:
+
+Original:
+
+E → E + T | T
+
+After elimination:
+
+E → TE'
+E' → +TE' | ε
+
+This new grammar is suitable for LL(1) parsing.
+
+2. What is left factoring? Explain with an example
+
+
+
+Left factoring is a grammar transformation technique used when two or more productions of a non-terminal share a common prefix.
+
+It helps the parser decide which production to choose using limited lookahead.
+
+If a grammar has productions like:
+
+A → αβ1 | αβ2
+
+where α is the common prefix, the parser cannot immediately decide which rule to use after seeing α.
+
+Left factoring removes this ambiguity.
+
+General form:
+
+Original:
+
+A → αβ1 | αβ2
+
+After left factoring:
+
+A → αA'
+A' → β1 | β2
+
+Example:
+
+Consider:
+
+S → iEtS | iEtSeS | a
+
+The first two productions start with the common prefix:
+
+iEtS
+
+So the parser cannot decide which production to select after seeing this prefix.
+
+Apply left factoring:
+
+S → iEtSS' | a
+S' → eS | ε
+
+Now the common prefix is extracted, and the choice is postponed until enough input is seen.
+
+Why is left factoring important for LL(1) parsing?
+
+LL(1) parsers use only one lookahead symbol to select productions.
+
+If multiple productions begin with the same prefix, the parser cannot make a unique decision.
+
+Left factoring removes common prefixes and makes the grammar more suitable for predictive parsing and LL(1) table construction.
