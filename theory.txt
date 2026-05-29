@@ -234,3 +234,76 @@ LL(1) parsers use only one lookahead symbol to select productions.
 If multiple productions begin with the same prefix, the parser cannot make a unique decision.
 
 Left factoring removes common prefixes and makes the grammar more suitable for predictive parsing and LL(1) table construction.
+
+
+3. Explain the concept of ambiguity by taking a suitable grammar and input
+
+
+
+A grammar is said to be ambiguous if a single input string can be generated in more than one way, that is, if it has more than one parse tree or more than one leftmost or rightmost derivation.
+
+Ambiguity creates confusion because the same input can have multiple interpretations or meanings.
+
+Consider the following grammar:
+
+E → E + E
+E → E * E
+E → id
+
+Take the input string:
+
+id + id * id
+
+This grammar is ambiguous because the input can be parsed in two different ways.
+
+First interpretation:
+
+id + (id * id)
+
+Here, multiplication is performed first.
+
+Parse:
+
+E → E + E
+→ id + E
+→ id + E * E
+→ id + id * id
+
+This corresponds to:
+
+id + (id * id)
+
+Second interpretation:
+
+(id + id) * id
+
+Here, addition is performed first.
+
+Parse:
+
+E → E * E
+→ E + E * E
+→ id + E * E
+→ id + id * id
+
+This corresponds to:
+
+(id + id) * id
+
+Since the same input string produces two different parse trees and meanings, the grammar is ambiguous.
+
+Why is ambiguity a problem?
+
+Ambiguous grammars create difficulty in compiler design because the compiler cannot determine a unique structure or meaning for an expression.
+
+For example, arithmetic expressions may produce different results depending on operator precedence and associativity.
+
+Therefore, grammars used in parsing are usually designed to be unambiguous.
+
+An unambiguous version of the above grammar is:
+
+E → E + T | T
+T → T * F | F
+F → id
+
+This grammar enforces operator precedence, where multiplication has higher precedence than addition, resulting in a unique parse tree.
