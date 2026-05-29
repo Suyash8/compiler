@@ -1,0 +1,71 @@
+1. What is left recursion? Why must it be eliminated for LL(1) parsing?
+
+Left recursion is a property of a grammar in which a non-terminal can derive a string that begins with itself. In other words, a grammar is left recursive if a non-terminal appears as the leftmost symbol in its own derivation.
+
+There are two types of left recursion:
+
+a) Direct left recursion:
+A non-terminal directly calls itself.
+
+Example:
+A → Aα | β
+
+Here, A appears immediately on the left side of the production Aα, making it directly left recursive.
+
+b) Indirect left recursion:
+A non-terminal derives another non-terminal that eventually derives back to the original non-terminal.
+
+Example:
+A → Bα
+B → Aβ | γ
+
+Here, A indirectly derives itself through B.
+
+Left recursion must be eliminated for LL(1) parsing because LL(1) parsers are top-down parsers that expand productions from left to right using one symbol of lookahead. If left recursion exists, the parser enters infinite recursion.
+
+For example:
+A → Aα | β
+
+When parsing A, the parser may repeatedly choose A → Aα, leading to:
+
+A ⇒ Aα
+⇒ Aαα
+⇒ Aααα
+...
+
+This process never terminates and prevents successful parsing. Therefore, left recursion must be removed before constructing an LL(1) parser.
+
+2. What is left recursion? Explain with an example.
+
+Left recursion occurs when a non-terminal in a grammar derives itself as the leftmost symbol during derivation.
+
+A grammar is left recursive if:
+
+A ⇒+ Aα
+
+where A is a non-terminal and α is any sequence of grammar symbols.
+
+Example:
+
+Consider the grammar:
+
+E → E + T | T
+
+This grammar is left recursive because E appears as the first symbol on the right-hand side of the production E → E + T.
+
+Suppose we try to derive an expression:
+
+E
+⇒ E + T
+⇒ E + T + T
+⇒ E + T + T + T
+...
+
+The non-terminal E keeps expanding into itself without reaching a terminal symbol immediately. This is an example of direct left recursion.
+
+To eliminate left recursion, the grammar can be rewritten as:
+
+E → T E'
+E' → + T E' | ε
+
+Now the recursion is removed, and the grammar becomes suitable for LL(1) parsing.
