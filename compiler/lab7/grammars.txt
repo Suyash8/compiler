@@ -1,0 +1,51 @@
+S → T S'
+S' → + T S' | ε
+T → F T'
+T' → * F T' | ε
+F → ( S ) | id
+---
+S → a S b
+S → ε
+---
+S → S S
+S → ( S )
+S → ε
+---
+S → a S
+S → b S
+S → ε
+---
+S → 0 S 1
+S → ε
+---
+S → a S a
+S → b S b
+S → a
+S → b
+S → ε
+---
+S → A a
+S → b
+A → A c
+A → S d
+A → ε
+---
+S → a A
+S → b B
+A → a S
+A → b A A
+A → a
+B → b S
+B → a B B
+B → b
+---
+S → T S'
+S' → + T S' | ε
+T → F T'
+T' → * F T' | ε
+F → ( S ) | id
+---
+S → i E t S
+S → i E t S e S
+S → a
+E → b
